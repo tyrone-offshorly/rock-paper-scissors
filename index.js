@@ -18,68 +18,72 @@ function playRound(computerChoice, humanChoice) {
   if(humanChoice == "rock") {
     // code for rock here
     if(computerChoice == "paper") {
-      console.log("You lost!");
       return "lose"
     } else if (computerChoice == "scissors") {
-      console.log("You Won!");
       return "win"
     } else {
-      console.log("It's a tie!");
       return "tie"
     }
   } else if (humanChoice == "paper") {
     // code for paper here
     if(computerChoice == "scissors") {
-      console.log("You lost!");
       return "lose"
     } else if (computerChoice == "rock") {
-      console.log("You Won!");
       return "win"
     } else {
-      console.log("It's a tie!");
       return "tie"
     }
   } else if (humanChoice == "scissors") {
     // code for scissors here
     if(computerChoice == "rock") {
-      console.log("You lost!");
       return "lose"
     } else if (computerChoice == "paper") {
-      console.log("You Won!");
       return "win"
     } else {
-      console.log("It's a tie!");
       return "tie"
     }
   }
 }
 
-function playGame() {
-  
-  let playerScore = 0;
-  let computerScore = 0;
-  for(let i = 0; i < 5; i++) {
-    const result = playRound(getComputerChoice(), getHumanChoice())
+// main
+const rpsChoice = document.querySelector("#playerChoice");
+const playerChoiceDisplay = document.querySelector("#playerChoiceDisplay");
+const computerChoiceDisplay = document.querySelector("#computerChoiceDisplay");
+const playerScore = document.querySelector("#playerScore");
+const computerScore = document.querySelector("#computerScore");
+rpsChoice.addEventListener("click", (event) => {
+  let target = event.target;
+  if (rpsChoice.id !== target.id) {
+    const computerChoice = getComputerChoice();
+    const playerChoice = target.id;
+    playerChoiceDisplay.textContent = `Choice: ${playerChoice}`;
+    computerChoiceDisplay.textContent = `Choice: ${computerChoice}`;
+    const result = playRound(computerChoice, playerChoice);
     switch (result) {
-      case "win":
-        playerScore++;
+      case 'lose':
+        computerScore.textContent = Number(computerScore.textContent) + 1;
         break;
-      case "lose":
-        computerScore++;
+      case 'tie':
+        playerScore.textContent = Number(playerScore.textContent) + 1;
+        computerScore.textContent = Number(computerScore.textContent) + 1;
         break;
-      case "tie":
-        playerScore++;
-        computerScore++;
+      case 'win':
+        playerScore.textContent = Number(playerScore.textContent) + 1;
+        break;
     }
-    console.log(`Your score is ${playerScore}`)
-    console.log(`Computer score is ${computerScore}`)
+    
+    if(Number(playerScore.textContent) === 5 ||Number(computerScore.textContent) === 5) {
+      setTimeout(() => {
+        if(Number(playerScore.textContent) > Number(computerScore.textContent)) {
+          alert("Player Wins!");
+        }else if(Number(playerScore.textContent) < Number(computerScore.textContent)) {
+          alert("Computer Wins!");
+        } else {
+          alert("It's a tie");
+        }
+      }, 0);
+    }
+    
   }
-  if(playerScore > computerScore) {
-    return "Player wins"
-  } else if(computerScore > playerScore) {
-    return "Computer wins"
-  } else {
-    return "It's a tie"
-  }
-}
-
+  
+});
